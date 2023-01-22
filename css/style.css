@@ -1,0 +1,100 @@
+/* dark mode */
+:root
+{
+    color-scheme:dark;
+}
+
+/* font, remove standart margin + padding */
+*
+{
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    background-color: #223;
+}
+
+header, footer
+{
+    background-color: #112;
+    padding: 12px;
+}
+
+footer
+{
+    width: 100%;
+    float: right;
+    margin-top: 12px;
+}
+
+#art form, .song
+{
+    width: 240px;
+    height: 190px;
+    padding: 12px;
+    margin-top: 12px;
+    margin-left: 12px;
+    background-color: #334;
+    border-radius: 12px;
+    float: left;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+h3
+{
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+iframe
+{
+    width: 240px;
+    height: 120px;
+    border: none;
+}
+
+/* select text in song div */
+.song p, .song a
+{
+    width: 80px;
+    padding-top: 3px;
+    margin-top: 3px;
+    padding-right: 3px;
+    margin-right: 16px;
+    margin-left: 16px;
+    float: left;
+    background-color: #445;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-align: center;
+}
+
+.song p:active, .song a:active
+{
+    color: black;
+}
+
+.del
+{
+    color: #f68;
+}
+
+.ver
+{
+    color: #8af;
+}
+
+.mov
+{
+    color: #8fa;
+}
+
+.cop
+{
+    color: #ff8;
+}

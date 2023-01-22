@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            ManageBox
+        </title>
+        <!-- Meta viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Charset -->
+        <meta charset="UTF-8">
+        <!-- Link css -->
+        <link rel="stylesheet" href="../css/style.css">
+        <!-- link javascript -->
+        <script src="../javascript/versions.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <h1>
+                Versions
+            </h1>
+            <a href="../index.html" id="back">
+                Go back
+            </a>
+        </header>
+        <article id="art">
+            <form autocomplete="off">
+                <h2>
+                    add new version
+                </h2>
+                <label for="song_url">Song URL</label>
+                <input type="text" name="song_url" id="song_url">
+                <br>
+                <button type="button" onclick="addSong()">Add</button>
+            </form>
+            <!-- song will be added after form -->
+        </article>
+    </body>
+</html>

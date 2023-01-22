@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            ManageBox
+        </title>
+        <!-- Meta viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Charset -->
+        <meta charset="UTF-8">
+        <!-- Link css -->
+        <link rel="stylesheet" href="css/style.css">
+        <!-- link javascript -->
+        <script src="javascript/manage.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <h1>
+                Welcome to ManageBox; A Beepbox song manager
+            </h1>
+            <form>
+                <label for="search">Search</label>
+                <input id="search" maxlength="30" type="text">
+                <button type="button" onclick="searchBar()">search</button>
+            </form>
+        </header>
+        <article id="art">
+            <form autocomplete="off">
+                <h2>
+                    add song
+                </h2>
+                <label for="song_name">Song name</label>
+                <br>
+                <input type="text" name="song_name" maxlength="30" id="song_name">
+                <br>
+                <label for="song_url">Song URL</label>
+                <br>
+                <input type="text" name="song_url" id="song_url">
+                <br>
+                <button type="button" onclick="addSong()">Add</button>
+            </form>
+            <!-- song will be added after form -->
+        </article>
+    </body>
+</html>
