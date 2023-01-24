@@ -32,11 +32,11 @@ footer
 
 #art form, .song
 {
-    width: 240px;
+    width: 230px;
     height: 190px;
-    padding: 12px;
-    margin-top: 12px;
-    margin-left: 12px;
+    padding: 6px;
+    margin-top: 6px;
+    margin-left: 6px;
     background-color: #334;
     border-radius: 12px;
     float: left;
@@ -50,11 +50,43 @@ h3
     margin-bottom: 3px;
 }
 
-iframe
+#version
 {
-    width: 240px;
+    font-size: 14px;
+    color: #aac;
+}
+
+#download
+{
+    margin-top: 12px;
+}
+
+iframe, .frame
+{
+    width: 230px;
     height: 120px;
     border: none;
+    border-radius: 6px;
+    background-color: #223;
+}
+
+.frame
+{
+    cursor: pointer;
+}
+
+button
+{
+    border: none;
+    border-radius: 3px;
+    background-color: #556;
+    padding: 2px;
+}
+
+input
+{
+    background-color: #001;
+    border: 2px solid #556;
 }
 
 /* select text in song div */
@@ -64,8 +96,7 @@ iframe
     padding-top: 3px;
     margin-top: 3px;
     padding-right: 3px;
-    margin-right: 16px;
-    margin-left: 16px;
+    margin-right: 3px;
     float: left;
     background-color: #445;
     border-radius: 6px;
@@ -74,27 +105,36 @@ iframe
     text-align: center;
 }
 
-.song p:active, .song a:active
+.song p:hover, .song a:hover, button:hover
 {
-    color: black;
+    background-color: #667;
 }
 
+.song p:active, .song a:active, button:active
+{
+    background-color: #223;
+}
+
+/* delete button color */
 .del
 {
-    color: #f68;
+    color: #f8a;
 }
 
-.ver
+/* version button color (also link color) */
+.ver, a
 {
-    color: #8af;
+    color: #8cf;
 }
 
+/* move button color */
 .mov
 {
-    color: #8fa;
+    color: #afc;
 }
 
+/* copy button color */
 .cop
 {
-    color: #ff8;
+    color: #ffa;
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>
             ManageBox
@@ -16,13 +16,32 @@
     <body>
         <header>
             <h1>
-                Welcome to ManageBox; A Beepbox song manager
+                Welcome to ManageBox: A Beepbox song manager<span id="version"> V2023.01.24</span>
             </h1>
-            <form>
-                <label for="search">Search</label>
+            <form autocomplete="off" action="javascript:searchBar()">
+                <label for="search">Search for song</label>
                 <input id="search" maxlength="30" type="text">
-                <button type="button" onclick="searchBar()">search</button>
+                <button>search</button>
             </form>
+            <br>
+            <details>
+                <summary>
+                    Extra
+                </summary>
+                    <br>
+                    <form action="javascript:updateLoaded()">
+                        <label for="limit">limit loaded songs</label>
+                        <input name="limit" id="limit" type="number">
+                        <button>save</button>
+                        <p>
+                            &#9432; Limits the amount of songs loaded on the page. Unloaded songs will appear as a gray box. clicking this gray box will load in the song.
+                        </p>
+                    </form>
+                    <br>
+                    <button type="button" onclick="downloadBackup()" id="download">Download offline backup</button>
+                    <br>
+                    <button type="button" onclick="inputText()">Upload backup</button>
+            </details>
         </header>
         <article id="art">
             <form autocomplete="off">

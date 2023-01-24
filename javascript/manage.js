@@ -2,6 +2,11 @@
 let mainData = null;
 let mainSaveData = null;
 
+// set limit
+let limit = read('limit');
+if (limit === null){limit = 10;}
+document.getElementById('limit').value = limit;
+
 // checks id data exists
 if (read('song_data') === null)
 {
@@ -22,22 +27,40 @@ else
         keys = keys.reverse();
         for (key of keys)
         {
-            addSongToPage(key, mainData[key][0]);
+            if (limit > 0)
+            {
+                addSongToPage(key, mainData[key][0]);
+                limit--;
+            }
+            else
+            {
+                addSongToPage(key, mainData[key][0], false);
+            }
         }
     }
     else
     {
         // yes? -> only add songs with search key word in its name.
-        songSearch = songSearch.toLowerCase().replace('%20', ' ');
+        songSearch = songSearch.toLowerCase().decodeURI();
         keys = Object.keys(mainData);
         keys = keys.reverse();
         for (key of keys)
         {
             if (key.toLowerCase().includes(songSearch))
             {
-                addSongToPage(key, mainData[key][0]);
+                if (limit > 0)
+                {
+                    addSongToPage(key, mainData[key][0]);
+                    limit--;
+                }
+                else
+                {
+                    addSongToPage(key, mainData[key][0], false);
+                }
             }
         }
+        // put in searched item
+        document.getElementById('search').value = songSearch;
     }
 }
 
@@ -71,7 +94,7 @@ function addSong()
         name = name+i;
     }
     // check if song is in player version
-    else if (!(url.includes('/player/#')))
+    if (!(url.includes('/player/#')))
     {
         // only some mods support player versions
         // for now only beepbox and jummbus songs will be converted to their player versions.
@@ -90,12 +113,21 @@ function addSong()
 }
 
 // adds song to page
-function addSongToPage(name, url)
+function addSongToPage(name, url, loadIframe = true)
 {
     // create a div with song name...
     let div = "<div class='song' id='song_" + name + "'><h3>" + name + "</h3>";
-    // add iframe with song contents to div...
-    div += "<iframe src='" + url + "''></iframe>";
+    // check for preformance mode...
+    if (loadIframe)
+    {
+        // add iframe with song contents to div...
+        div += "<iframe src='" + url + "'></iframe>";
+    }
+    else
+    {
+        // add div...
+        div += "<div class='frame' onclick='frame(\"" + name + "\")' id='frame_" + name + "' ></div>";
+    }
     // add "versions" button to div...
     div += "<a class='ver' href='pages/versions.html?song=" + name + "'>versions</a>"
     // add "move to top" button to div...
@@ -114,7 +146,7 @@ function removeFromPage(name)
 {
     // confirm deletion
     const confirmChoice = confirm('are you sure you want to delete "' + name + '"?\nThis cannot be undone.');
-    if (confirmChoice === true)
+    if (confirmChoice)
     {
         // delete from page
         const element = document.getElementById('song_'+name);
@@ -166,4 +198,154 @@ function searchBar()
     }
     // if search is not empty, reload page but with GET data.
     window.location.href = 'index.html?search=' + search;
+}
+
+// console function - returns song's JSON data
+function getJSONData()
+{
+    mainSaveData = JSON.stringify(mainData);
+    console.log(mainSaveData);
+}
+
+// console function - input JSON data (will replace song data!)
+function inputJSONData(newData)
+{
+    newData = mainData = JSON.parse(newData);
+    const count = Object.keys(newData).length;
+    const confirmChoice = confirm('are you sure you want to replace current data with new data? (' + count + ' songs)');
+    if (confirmChoice)
+    {
+        // save results
+        mainSaveData = JSON.stringify(newData)
+        replace('song_data', mainSaveData);
+        location.reload();
+    }
+}
+
+// Downloads file
+function download(filename, text)
+{
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
+}
+
+
+// Create string for download
+function downloadBackup()
+{
+    // songText will be the text in the textfile
+    let songText = '';
+    keys = Object.keys(mainData);
+    keys = keys.reverse();
+    // loop throught keys
+    for (key of keys)
+    {
+        songText += key + '\n';
+        // loop through song versions
+        for (link of mainData[key])
+        {
+            // add song to songText
+            songText += link + '\n\n';
+        }
+    }
+    songText = songText.slice(0, -4);
+    download('ManageBox_backup', songText);
+}
+
+// Shows iframe when clicking empty song
+function frame(frameName)
+{
+    document.getElementById('frame_' + frameName).innerHTML="<iframe src='" + mainData[frameName][0] + "'></iframe>";
+}
+
+// updates "limit" setting
+function updateLoaded()
+{
+    limit = document.getElementById('limit').value;
+    replace('limit', limit);
+    location.reload();
+}
+
+function inputText()
+{
+    const input = prompt('Copy + pase song data in here. Make sure each song has a name, and all names + links are separated with line breaks. After that, the uploaded songs will be added.');
+    const textArray = input.split('\n');
+    const inputSongData = {};
+    let inputSongName = '';
+    let inputSongs = [];
+    let nr = 0;
+    let urlSplit = null;
+    for (text of textArray)
+    {
+        if (text !== '')
+        {
+            if (text.includes('https://'))
+            {
+                // is link
+                if (!(text.includes('/player/#')))
+                {
+                    // only some mods support player versions
+                    // for now only beepbox and jummbus songs will be converted to their player versions.
+                    if (text.includes('beepbox.io/') || text.includes('jummbus.bitbucket.io/'))
+                    {
+                        // convert url to player version
+                        urlSplit = text.split('/#');
+                        text =  urlSplit[0] + '/player/#song=' + urlSplit[1];
+                    }
+                }
+                inputSongs.push(text);
+            }
+            else
+            {
+                // is name
+                text = text.replace(/(\r\n|\n|\r)/gm, "");
+                if (inputSongName !== '')
+                {
+                    inputSongData[inputSongName] = inputSongs;
+                    inputSongs = [];
+                }
+                inputSongName = text;
+                // Check if name exists
+                if (text in mainData || text in inputSongData || text === '')
+                {
+                    // assign new name
+                    text = 'unnamed '
+                    nr = 1
+                    while ((text + nr) in mainData || (text+nr) in inputSongData)
+                    {
+                        nr++
+                    }
+                    inputSongName = text+nr;
+                }
+            }
+        }
+    }
+    let confirmString = 'Do you want to add these songs to your current list of songs? (songs with matching names have been renamed to "unnamed"\n\n'
+    inputSongData[inputSongName] = inputSongs;
+    items = Object.keys(inputSongData);
+    for (item of items)
+    {
+        confirmString += item + ' (' + inputSongData[item].length + ' versions)' + '\n';
+    }
+    const confirmAdd = confirm(confirmString);
+    if (confirmAdd)
+    {
+        items = Object.keys(inputSongData);
+        for (item of items)
+        {
+            // save song data
+            mainData[item] = inputSongData[item];
+        }
+        mainSaveData = JSON.stringify(mainData);
+        replace('song_data', mainSaveData);
+        location.reload();
+    }
 }
